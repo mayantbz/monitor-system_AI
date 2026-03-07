@@ -4,4 +4,5 @@
 
 export { useAppStore } from './app'
 export { useLocaleStore } from './locale'
+export { useTabsStore } from './tabs'
 export { useUserStore } from './user'

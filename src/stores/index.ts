@@ -9,4 +9,4 @@
 export * from './types'
 export * from './constants'
 export { persist } from './utils/persist'
-export { useAppStore, useLocaleStore, useUserStore } from './modules'
+export { useAppStore, useLocaleStore, useTabsStore, useUserStore } from './modules'

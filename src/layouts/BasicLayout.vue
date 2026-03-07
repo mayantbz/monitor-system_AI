@@ -41,6 +41,7 @@ const cachedViews = computed(() => {
       <header class="layout-header">
         <span class="layout-title">Monitor System</span>
         <div class="layout-actions">
+          <el-button type="primary" link @click="router.push('/admin')">进入后台</el-button>
           <el-button type="primary" link @click="localeStore.toggleLocale()">
             {{ localeStore.localeLabel }} / {{ localeStore.locale === 'zh-cn' ? 'English' : '中文' }}
           </el-button>
