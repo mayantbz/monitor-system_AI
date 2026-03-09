@@ -1,0 +1,85 @@
+/**
+ * English
+ */
+export default {
+  app: {
+    name: 'Monitor System',
+    nameShort: 'Monitor',
+  },
+  common: {
+    confirm: 'OK',
+    cancel: 'Cancel',
+    search: 'Search',
+    reset: 'Reset',
+    submit: 'Submit',
+    back: 'Back',
+    backHome: 'Back to Home',
+    logout: 'Logout',
+    enterAdmin: 'Enter Admin',
+    langSwitch: '中文 / English',
+    langSwitchEn: 'English / 中文',
+    pleaseInput: 'Please input',
+    all: 'All',
+    start: 'Start',
+    end: 'End',
+  },
+  route: {
+    dashboard: 'Home',
+    login: 'Login',
+    notFound: '404',
+    admin: 'Admin',
+    adminBehaviors: 'Behaviors',
+    adminErrors: 'Errors',
+  },
+  menu: {
+    dashboard: 'Home',
+    admin: 'Admin',
+    adminBehaviors: 'Behaviors',
+    adminErrors: 'Errors',
+  },
+  login: {
+    title: 'Monitor System',
+    subtitle: 'Frontend Monitor · Login',
+    username: 'Username',
+    password: 'Password',
+    loginBtn: 'Login',
+    success: 'Login successful',
+    tip: 'Demo: any input to login',
+  },
+  dashboard: {
+    welcome: 'Welcome back, {name}',
+    defaultUser: 'User',
+    desc: 'Monitor System - Frontend Monitor',
+  },
+  error404: {
+    title: 'Page Not Found',
+    desc: 'Sorry, the page you visited does not exist or has been removed.',
+  },
+  admin: {
+    headerTitle: 'Frontend Monitor · Admin',
+    backHome: 'Back to Home',
+    breadcrumbAdmin: 'Admin',
+    behaviors: {
+      timeRange: 'Time Range',
+      pageUrl: 'Page URL',
+      userId: 'User ID',
+      time: 'Time',
+      actionType: 'Action Type',
+      targetElement: 'Target Element',
+    },
+    errors: {
+      timeRange: 'Time Range',
+      level: 'Level',
+      pageUrl: 'Page URL',
+      time: 'Time',
+      message: 'Message',
+      count: 'Count',
+      levelError: 'Error',
+      levelWarning: 'Warning',
+    },
+  },
+  permission: {
+    noPermission: 'No permission',
+    noRole: 'No role permission',
+  },
+} as const

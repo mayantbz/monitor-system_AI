@@ -11,7 +11,7 @@ const dashboardRoutes: AppRouteRecordRaw[] = [
     name: ROUTE_NAME.DASHBOARD,
     component: () => import('@/views/dashboard/index.vue'),
     meta: {
-      title: '首页',
+      title: 'route.dashboard',
       icon: 'HomeFilled',
       keepAlive: true,
       affix: true,

@@ -19,3 +19,5 @@ export const dayjsLocales: Record<LocaleType, string> = {
 export function setDayjsLocale(locale: LocaleType) {
   dayjs.locale(dayjsLocales[locale])
 }
+
+export { i18n, storeLocaleToI18n } from './i18n'

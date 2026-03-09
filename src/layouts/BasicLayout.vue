@@ -2,13 +2,17 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { useLocaleStore, useUserStore } from '@/stores'
+import { usePermission } from '@/composables/usePermission'
 import { elementPlusLocales } from '@/locale'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const localeStore = useLocaleStore()
 const userStore = useUserStore()
+const { canEnterAdmin } = usePermission()
 
 function handleLogout() {
   userStore.logout()
@@ -16,6 +20,9 @@ function handleLogout() {
 }
 
 const elementLocale = computed(() => elementPlusLocales[localeStore.locale])
+const langSwitchLabel = computed(() =>
+  localeStore.locale === 'zh-cn' ? t('common.langSwitch') : t('common.langSwitchEn')
+)
 
 /** 需要缓存的页面 name 列表 */
 const cachedViews = computed(() => {
@@ -39,13 +46,15 @@ const cachedViews = computed(() => {
   <el-config-provider :locale="elementLocale">
     <div class="basic-layout">
       <header class="layout-header">
-        <span class="layout-title">Monitor System</span>
+        <span class="layout-title">{{ t('app.name') }}</span>
         <div class="layout-actions">
-          <el-button type="primary" link @click="router.push('/admin')">进入后台</el-button>
-          <el-button type="primary" link @click="localeStore.toggleLocale()">
-            {{ localeStore.localeLabel }} / {{ localeStore.locale === 'zh-cn' ? 'English' : '中文' }}
+          <el-button v-if="canEnterAdmin" type="primary" link @click="router.push('/admin')">
+            {{ t('common.enterAdmin') }}
           </el-button>
-          <el-button type="danger" link @click="handleLogout">退出</el-button>
+          <el-button type="primary" link @click="localeStore.toggleLocale()">
+            {{ langSwitchLabel }}
+          </el-button>
+          <el-button type="danger" link @click="handleLogout">{{ t('common.logout') }}</el-button>
         </div>
       </header>
       <main class="layout-main">

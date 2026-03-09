@@ -22,6 +22,7 @@ export const useLocaleStore = defineStore(
 
     function toggleLocale() {
       setLocale(locale.value === 'zh-cn' ? 'en' : 'zh-cn')
+      window.location.reload()
     }
 
     return { locale, localeLabel, setLocale, toggleLocale }

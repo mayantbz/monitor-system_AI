@@ -10,5 +10,7 @@ export interface UserInfo {
   nickname?: string
   avatar?: string
   roles?: string[]
+  /** 权限码列表，与后端约定 */
+  permissions?: string[]
 }
 

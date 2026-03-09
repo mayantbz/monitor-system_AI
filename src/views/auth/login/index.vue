@@ -2,11 +2,14 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
+import { PERMISSION } from '@/constants/permission'
 
 const router = useRouter()
 const route = useRoute()
+const { t } = useI18n()
 const userStore = useUserStore()
 
 const username = ref('')
@@ -16,13 +19,13 @@ const loading = ref(false)
 async function handleLogin() {
   loading.value = true
   try {
-    // 测试阶段：任意输入均可登录
     userStore.setToken(`token-${Date.now()}`)
     userStore.setUserInfo({
       username: username.value || 'guest',
       nickname: username.value || '访客',
+      permissions: Object.values(PERMISSION),
     })
-    ElMessage.success('登录成功')
+    ElMessage.success(t('login.success'))
     const redirect = (route.query.redirect as string) || '/'
     await router.push(redirect)
   } finally {
@@ -41,15 +44,15 @@ async function handleLogin() {
 
     <div class="login-card">
       <div class="login-header">
-        <h1 class="login-title">Monitor System</h1>
-        <p class="login-subtitle">前端监控系统 · 登录</p>
+        <h1 class="login-title">{{ t('login.title') }}</h1>
+        <p class="login-subtitle">{{ t('login.subtitle') }}</p>
       </div>
 
       <el-form class="login-form" @submit.prevent="handleLogin">
         <el-form-item>
           <el-input
             v-model="username"
-            placeholder="用户名"
+            :placeholder="t('login.username')"
             size="large"
             :prefix-icon="User"
             autocomplete="username"
@@ -59,7 +62,7 @@ async function handleLogin() {
           <el-input
             v-model="password"
             type="password"
-            placeholder="密码"
+            :placeholder="t('login.password')"
             size="large"
             :prefix-icon="Lock"
             show-password
@@ -75,12 +78,12 @@ async function handleLogin() {
             :loading="loading"
             @click="handleLogin"
           >
-            登 录
+            {{ t('login.loginBtn') }}
           </el-button>
         </el-form-item>
       </el-form>
 
-      <p class="login-tip">测试阶段：任意输入均可登录</p>
+      <p class="login-tip">{{ t('login.tip') }}</p>
     </div>
   </div>
 </template>

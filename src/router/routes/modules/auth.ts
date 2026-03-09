@@ -12,7 +12,7 @@ const authRoutes: AppRouteRecordRaw[] = [
     name: ROUTE_NAME.LOGIN,
     component: () => import('@/views/auth/login/index.vue'),
     meta: {
-      title: '登录',
+      title: 'route.login',
       hidden: true,
       keepAlive: false,
       noBreadcrumb: true,
@@ -23,7 +23,7 @@ const authRoutes: AppRouteRecordRaw[] = [
     name: ROUTE_NAME.NOT_FOUND,
     component: () => import('@/views/error/404.vue'),
     meta: {
-      title: '404',
+      title: 'route.notFound',
       hidden: true,
       keepAlive: false,
       noBreadcrumb: true,

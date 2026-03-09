@@ -25,7 +25,7 @@ const adminLayoutRoute: AppRouteRecordRaw = {
   name: ROUTE_NAME.ADMIN,
   component: () => import('@/layouts/AdminLayout.vue'),
   redirect: ROUTE_PATH.ADMIN_BEHAVIORS,
-  meta: { title: '后台', hidden: true, noBreadcrumb: true },
+  meta: { title: 'route.admin', hidden: true, noBreadcrumb: true },
   children: [...adminRoutes],
 }
 

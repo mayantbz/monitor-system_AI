@@ -1,17 +1,24 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores'
 import { ROUTE_NAME } from '@/router/constants'
 
 defineOptions({ name: ROUTE_NAME.DASHBOARD })
 
+const { t } = useI18n()
 const userStore = useUserStore()
+
+const displayName = computed(
+  () => userStore.userInfo?.nickname || userStore.userInfo?.username || t('dashboard.defaultUser')
+)
 </script>
 
 <template>
   <div class="dashboard">
     <div class="dashboard-welcome">
-      <h1>欢迎回来，{{ userStore.userInfo?.nickname || userStore.userInfo?.username || '用户' }}</h1>
-      <p>Monitor System 前端监控系统</p>
+      <h1>{{ t('dashboard.welcome', { name: displayName }) }}</h1>
+      <p>{{ t('dashboard.desc') }}</p>
     </div>
   </div>
 </template>

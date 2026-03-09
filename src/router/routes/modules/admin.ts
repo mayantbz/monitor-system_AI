@@ -12,7 +12,7 @@ const adminRoutes: AppRouteRecordRaw[] = [
     name: ROUTE_NAME.ADMIN_BEHAVIORS,
     component: () => import('@/views/admin/behaviors/index.vue'),
     meta: {
-      title: '行为监控',
+      title: 'route.adminBehaviors',
       icon: 'Monitor',
       keepAlive: true,
     },
@@ -22,7 +22,7 @@ const adminRoutes: AppRouteRecordRaw[] = [
     name: ROUTE_NAME.ADMIN_ERRORS,
     component: () => import('@/views/admin/errors/index.vue'),
     meta: {
-      title: '错误监控',
+      title: 'route.adminErrors',
       icon: 'WarningFilled',
       keepAlive: true,
     },

@@ -2,32 +2,37 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { Monitor, WarningFilled, Close } from '@element-plus/icons-vue'
 import { useLocaleStore, useTabsStore, useUserStore } from '@/stores'
+import { usePermission } from '@/composables/usePermission'
 import { elementPlusLocales } from '@/locale'
 import { ROUTE_PATH } from '@/router/constants'
+import { PERMISSION } from '@/constants/permission'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const localeStore = useLocaleStore()
 const tabsStore = useTabsStore()
 const userStore = useUserStore()
+const { hasPermission } = usePermission()
 
-const adminMenus = [
-  { path: ROUTE_PATH.ADMIN_BEHAVIORS, title: '行为监控', icon: Monitor },
-  { path: ROUTE_PATH.ADMIN_ERRORS, title: '错误监控', icon: WarningFilled },
-]
+const adminMenus = computed(() => [
+  { path: ROUTE_PATH.ADMIN_BEHAVIORS, titleKey: 'menu.adminBehaviors', icon: Monitor, permission: PERMISSION.ADMIN_BEHAVIORS },
+  { path: ROUTE_PATH.ADMIN_ERRORS, titleKey: 'menu.adminErrors', icon: WarningFilled, permission: PERMISSION.ADMIN_ERRORS },
+].filter((item) => hasPermission(item.permission)))
 
 const elementLocale = computed(() => elementPlusLocales[localeStore.locale])
 
-// 根据当前路由同步 Tab
+// 根据当前路由同步 Tab（meta.title 为 i18n key）
 watch(
   () => ({ path: route.path, name: route.name, meta: route.meta }),
   (to) => {
     if (to.path.startsWith(ROUTE_PATH.ADMIN) && to.path !== ROUTE_PATH.ADMIN && to.name && to.meta?.title) {
       tabsStore.addTab({
         path: to.path,
-        title: (to.meta.title as string) || String(to.name),
+        title: to.meta.title as string,
         name: String(to.name),
       })
     }
@@ -35,11 +40,11 @@ watch(
   { immediate: true }
 )
 
-// 面包屑：从 matched 生成，排除 noBreadcrumb
+// 面包屑：从 matched 生成，排除 noBreadcrumb（title 为 i18n key）
 const breadcrumbs = computed(() => {
   return route.matched
     .filter((r) => r.meta?.title && !r.meta?.noBreadcrumb)
-    .map((r) => ({ path: r.path, title: r.meta!.title as string }))
+    .map((r) => ({ path: r.path, titleKey: r.meta!.title as string }))
 })
 
 function handleMenuSelect(path: string) {
@@ -68,6 +73,10 @@ function handleLogout() {
   router.push('/login')
 }
 
+const langSwitchLabel = computed(() =>
+  localeStore.locale === 'zh-cn' ? t('common.langSwitch') : t('common.langSwitchEn')
+)
+
 const cachedViews = computed(() => {
   return (route.matched
     .filter((r) => r.meta?.keepAlive && r.name)
@@ -80,14 +89,14 @@ const cachedViews = computed(() => {
     <div class="admin-layout">
       <header class="admin-header">
         <div class="header-left">
-          <span class="logo">前端监控 · 管理后台</span>
-          <el-button type="primary" link @click="goHome">返回首页</el-button>
+          <span class="logo">{{ t('admin.headerTitle') }}</span>
+          <el-button type="primary" link @click="goHome">{{ t('admin.backHome') }}</el-button>
         </div>
         <div class="header-right">
           <el-button type="primary" link @click="localeStore.toggleLocale()">
-            {{ localeStore.locale === 'zh-cn' ? 'English' : '中文' }}
+            {{ langSwitchLabel }}
           </el-button>
-          <el-button type="danger" link @click="handleLogout">退出</el-button>
+          <el-button type="danger" link @click="handleLogout">{{ t('common.logout') }}</el-button>
         </div>
       </header>
       <div class="admin-body">
@@ -103,7 +112,7 @@ const cachedViews = computed(() => {
               :index="item.path"
             >
               <el-icon><component :is="item.icon" /></el-icon>
-              <template #title>{{ item.title }}</template>
+              <template #title>{{ t(item.titleKey) }}</template>
             </el-menu-item>
           </el-menu>
         </aside>
@@ -117,7 +126,7 @@ const cachedViews = computed(() => {
                 :class="{ active: tabsStore.activePath === tab.path }"
                 @click="handleTabClick(tab.path)"
               >
-                <span>{{ tab.title }}</span>
+                <span>{{ t(tab.title) }}</span>
                 <el-icon
                   v-if="tabsStore.tabs.length > 1"
                   class="tab-close"
@@ -130,13 +139,13 @@ const cachedViews = computed(() => {
           </div>
           <div class="admin-breadcrumb">
             <el-breadcrumb separator="/">
-              <el-breadcrumb-item :to="{ path: ROUTE_PATH.ADMIN }">后台</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: ROUTE_PATH.ADMIN }">{{ t('admin.breadcrumbAdmin') }}</el-breadcrumb-item>
               <el-breadcrumb-item
                 v-for="(crumb, i) in breadcrumbs"
                 :key="crumb.path"
                 :to="i < breadcrumbs.length - 1 ? { path: crumb.path } : undefined"
               >
-                {{ crumb.title }}
+                {{ t(crumb.titleKey) }}
               </el-breadcrumb-item>
             </el-breadcrumb>
           </div>
